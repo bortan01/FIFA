@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Modelo/Partido.java</file>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Modelo/Equipo.java</file>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Vista/Liga.java</file>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Modelo/Detalle_partido.java</file>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Controlador/Conexion.java</file>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Modelo/Miembros.java</file>
-            <file>file:/C:/Users/MIRANDA/Documents/NetBeansProjects/fifa/src/Modelo/Liga.java</file>
+            <file>file:/C:/Users/MIRANDA/Desktop/FIFA/fifa/src/Vista/Vista.java</file>
+            <file>file:/C:/Users/MIRANDA/Desktop/FIFA/fifa/src/Controlador/repositorio_liga.java</file>
         </group>
     </open-files>
 </project-private>
