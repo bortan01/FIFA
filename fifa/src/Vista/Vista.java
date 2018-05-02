@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -111,7 +112,7 @@ public class Vista extends javax.swing.JFrame {
             }
         });
         jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 160, 224, -1));
-        jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 170, 180));
+        jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 170, 180));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -203,14 +204,22 @@ public class Vista extends javax.swing.JFrame {
         int opcion = selector.showOpenDialog(this);
 
         if (opcion == JFileChooser.APPROVE_OPTION) {
-            JOptionPane.showMessageDialog(this, "haz guardado");
-            String nombre = selector.getSelectedFile().getPath();
-            String direccion = selector.getSelectedFile().toString();
-            System.out.println(nombre);
-            System.out.println(direccion);
+           // JOptionPane.showMessageDialog(this, "haz guardado");
+            String fil = selector.getSelectedFile().toString();
+            txtFoto.setIcon(new ImageIcon(fil));
+            ImageIcon  icon= new ImageIcon(fil);
+            Image img = icon.getImage();
+            Image newImg = img.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH);
+            ImageIcon newIcon = new ImageIcon(newImg);
+            txtFoto.setIcon(newIcon);
+            txtFoto.setSize(155,175);
+        
             
-            ImageIcon icono = new ImageIcon(direccion);
-            txtFoto.setIcon(icono);
+            
+          
+         
+//            txtFoto.setIcon((Icon) icono.getImage().getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+         
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

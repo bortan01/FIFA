@@ -18,7 +18,7 @@ public class repositorio_liga {
             
             
             PreparedStatement pps = (PreparedStatement) c.prepareStatement(sql);
-           pps.setString(1, l.getNombre());
+            pps.setString(1, l.getNombre());
             pps.setString(2, l.getPais());
             pps.setString(3, l.getTemporada());
              pps.executeUpdate();
