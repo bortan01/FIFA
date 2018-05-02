@@ -205,14 +205,12 @@ public class Vista extends javax.swing.JFrame {
 
         if (opcion == JFileChooser.APPROVE_OPTION) {
            // JOptionPane.showMessageDialog(this, "haz guardado");
-            String fil = selector.getSelectedFile().toString();
-            txtFoto.setIcon(new ImageIcon(fil));
-            ImageIcon  icon= new ImageIcon(fil);
-            Image img = icon.getImage();
-            Image newImg = img.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH);
-            ImageIcon newIcon = new ImageIcon(newImg);
-            txtFoto.setIcon(newIcon);
-            txtFoto.setSize(155,175);
+            String direccion = selector.getSelectedFile().toString();
+            
+            Image  imgagen= new ImageIcon(direccion).getImage().getScaledInstance(155,175,java.awt.Image.SCALE_SMOOTH);
+            ImageIcon icono = new ImageIcon(imgagen);
+           
+            txtFoto.setIcon(icono);
         
             
             
