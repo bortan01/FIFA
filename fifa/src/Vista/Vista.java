@@ -18,6 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Vista extends javax.swing.JFrame {
 
+    protected String direccion;
     protected Conexion con = new Conexion();
     public Vista() {
         initComponents();
@@ -205,7 +206,7 @@ public class Vista extends javax.swing.JFrame {
 
         if (opcion == JFileChooser.APPROVE_OPTION) {
            // JOptionPane.showMessageDialog(this, "haz guardado");
-            String direccion = selector.getSelectedFile().toString();
+           direccion = selector.getSelectedFile().toString();
             
             Image  imgagen= new ImageIcon(direccion).getImage().getScaledInstance(155,175,java.awt.Image.SCALE_SMOOTH);
             ImageIcon icono = new ImageIcon(imgagen);
@@ -226,8 +227,7 @@ public class Vista extends javax.swing.JFrame {
 
         con.abrirConexion();
 
-        Liga liga = new Liga(WIDTH, textNombre.getText().toString(), textPais.getText().toString(), texTemporada.getText().toString());
-
+        Liga liga = new Liga(0, textNombre.getText().toString(), textPais.getText().toString(), texTemporada.getText().toString(),direccion);
         repositorio_liga repol = new repositorio_liga();
         repol.guardarLiga(liga, con.obtenerConexion());
         con.Cerrar_conexion();

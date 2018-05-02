@@ -4,15 +4,25 @@ public class Liga {
     String nombre ;
     String pais;
     String temporada ;
+    String Foto;
 
     public Liga() {
     }
 
-    public Liga(int id_liga, String nombre, String pais, String temporada) {
+    public Liga(int id_liga, String nombre, String pais, String temporada,String Foto) {
         this.id_liga = id_liga;
         this.nombre = nombre;
         this.pais = pais;
         this.temporada = temporada;
+        this.Foto = Foto;
+    }
+
+    public String getFoto() {
+        return Foto;
+    }
+
+    public void setFoto(String Foto) {
+        this.Foto = Foto;
     }
 
     
