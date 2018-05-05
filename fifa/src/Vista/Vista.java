@@ -4,30 +4,59 @@ import Controlador.Conexion;
 import Controlador.repositorio_liga;
 import Modelo.Liga;
 import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 import java.awt.Image;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import javax.swing.table.DefaultTableModel;
 
 public class Vista extends javax.swing.JFrame {
 
     protected String direccion;
+    repositorio_liga repo = new repositorio_liga();
     protected Conexion con = new Conexion();
+
     public Vista() {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        Image  imgagen= new ImageIcon("C:\\Users\\MIRANDA\\Desktop\\FIFA\\fifa\\src\\imagenes\\fondo.jpg").getImage().getScaledInstance(855,390,java.awt.Image.SCALE_SMOOTH);
+        Image imgagen = new ImageIcon("C:\\Users\\MIRANDA\\Desktop\\FIFA\\fifa\\src\\imagenes\\fondo.jpg").getImage().getScaledInstance(855, 390, java.awt.Image.SCALE_SMOOTH);
         ImageIcon icono = new ImageIcon(imgagen);
-           
-            txtFondo.setIcon(icono);
+        txtFondo.setIcon(icono);
+
+        CrearTabla();
+
+    }
+
+    public void CrearTabla() {
+        try {
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Pais");
+            modelo.addColumn("logo");
+            String datos[] = new String[3];
+            con.abrirConexion();
+            ResultSet rs = repo.listar_liga(con.obtenerConexion());
+
+            while (rs.next()) {
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                // datos[2] = rs.getBinaryStream();
+                modelo.addRow(datos);
+
+            }
+            tablaLiga.setModel(modelo);
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -50,6 +79,8 @@ public class Vista extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         txtFoto = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaLiga = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -106,7 +137,7 @@ public class Vista extends javax.swing.JFrame {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel7.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 214, -1, -1));
+        jPanel7.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
 
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setText("Logo");
@@ -120,6 +151,18 @@ public class Vista extends javax.swing.JFrame {
         });
         jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 160, 224, -1));
         jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 170, 180));
+
+        tablaLiga.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tablaLiga);
+
+        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 810, 130));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -211,20 +254,13 @@ public class Vista extends javax.swing.JFrame {
         int opcion = selector.showOpenDialog(this);
 
         if (opcion == JFileChooser.APPROVE_OPTION) {
-           // JOptionPane.showMessageDialog(this, "haz guardado");
-           direccion = selector.getSelectedFile().toString();
-            
-            Image  imgagen= new ImageIcon(direccion).getImage().getScaledInstance(155,175,java.awt.Image.SCALE_SMOOTH);
+            // JOptionPane.showMessageDialog(this, "haz guardado");
+            direccion = selector.getSelectedFile().toString();
+
+            Image imgagen = new ImageIcon(direccion).getImage().getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH);
             ImageIcon icono = new ImageIcon(imgagen);
-           
+
             txtFoto.setIcon(icono);
-        
-            
-            
-          
-         
-//            txtFoto.setIcon((Icon) icono.getImage().getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
-         
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -232,20 +268,17 @@ public class Vista extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
         con.abrirConexion();
-
-        Liga liga = new Liga(0, textNombre.getText().toString(), textPais.getText().toString(), texTemporada.getText().toString(),direccion);
-        repositorio_liga repol = new repositorio_liga();
-        repol.guardarLiga(liga, con.obtenerConexion());
+        Liga liga = new Liga(0, textNombre.getText().toString(), textPais.getText().toString(), texTemporada.getText().toString(), direccion);
+        repo.guardarLiga(liga, con.obtenerConexion());
         con.Cerrar_conexion();
 
         textNombre.setText("");
         texTemporada.setText("");
         textPais.setText("");
+
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -294,7 +327,9 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tablaLiga;
     private javax.swing.JTextField texTemporada;
     private javax.swing.JTextField textNombre;
     private javax.swing.JTextField textPais;
