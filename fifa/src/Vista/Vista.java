@@ -5,12 +5,18 @@ import Controlador.repositorio_liga;
 import Modelo.Liga;
 import com.mysql.jdbc.Connection;
 import java.awt.Image;
+import java.awt.Label;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -39,22 +45,35 @@ public class Vista extends javax.swing.JFrame {
             modelo.addColumn("Nombre");
             modelo.addColumn("Pais");
             modelo.addColumn("logo");
-            String datos[] = new String[3];
+            String nombre = null;
+            String Nacionalidad = null;
+            
+            ImageIcon icono=null;
+            InputStream bits = null;
+            
             con.abrirConexion();
             ResultSet rs = repo.listar_liga(con.obtenerConexion());
 
             while (rs.next()) {
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                // datos[2] = rs.getBinaryStream();
-                modelo.addRow(datos);
-
+                nombre = rs.getString(1);
+                Nacionalidad = rs.getString(2);
+                bits = rs.getBinaryStream(3);
+                BufferedImage imagen =  (BufferedImage) ImageIO.read(bits);
+                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+                    
+                JLabel txtFoto2 = new JLabel();
+               txtFoto2.setIcon(icono);
+               txtFoto.setIcon(icono);
+               tablaLiga.setRowHeight(155);
+               
+                modelo.addRow(new Object[]{nombre,Nacionalidad,txtFoto2});
             }
             tablaLiga.setModel(modelo);
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Problemas con la imagen Stream " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -150,14 +169,14 @@ public class Vista extends javax.swing.JFrame {
             }
         });
         jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 160, 224, -1));
-        jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 170, 180));
+        jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 170, 180));
 
         tablaLiga.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-
+                "null"
             }
         ));
         jScrollPane1.setViewportView(tablaLiga);
