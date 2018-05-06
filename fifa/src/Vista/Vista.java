@@ -4,6 +4,7 @@ import Controlador.Conexion;
 import Controlador.repositorio_liga;
 import Modelo.Liga;
 import com.mysql.jdbc.Connection;
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.awt.Image;
 import java.awt.Label;
 import java.awt.image.BufferedImage;
@@ -18,7 +19,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Vista extends javax.swing.JFrame {
@@ -48,10 +51,10 @@ public class Vista extends javax.swing.JFrame {
             modelo.addColumn("logo");
             String nombre = null;
             String Nacionalidad = null;
-            
-            ImageIcon icono=null;
+
+            ImageIcon icono = null;
             InputStream bits = null;
-            
+
             con.abrirConexion();
             ResultSet rs = repo.listar_liga(con.obtenerConexion());
 
@@ -59,24 +62,36 @@ public class Vista extends javax.swing.JFrame {
                 nombre = rs.getString(1);
                 Nacionalidad = rs.getString(2);
                 bits = rs.getBinaryStream(3);
-                BufferedImage imagen =  (BufferedImage) ImageIO.read(bits);
+                BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
                 icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
-                    
+
                 JLabel txtFoto2 = new JLabel();
-               txtFoto2.setIcon(icono);
-               txtFoto.setIcon(icono);
-               tablaLiga.setRowHeight(155);
+                txtFoto2.setIcon(icono);
+                txtFoto2.enableInputMethods(false);
+                txtFoto.setIcon(icono);
+                tablaLiga.setRowHeight(155);
                
-                modelo.addRow(new Object[]{nombre,Nacionalidad,txtFoto2});
+
+                modelo.addRow(new Object[]{nombre, Nacionalidad, txtFoto2});
             }
             tablaLiga.setModel(modelo);
-
+          //  CentrarCeldas(0);
+          //  CentrarCeldas(1);
+          //  CentrarCeldas(2);
+           
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con la imagen Stream " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
+    }
+
+    void CentrarCeldas(int columna) {
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        tablaLiga.getColumnModel().getColumn(columna).setCellRenderer(modelocentrar);
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -117,14 +132,14 @@ public class Vista extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
+                .addComponent(txtFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 895, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addComponent(txtFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -182,7 +197,7 @@ public class Vista extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaLiga);
 
-        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 810, 130));
+        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 860, 310));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -207,11 +222,11 @@ public class Vista extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 875, Short.MAX_VALUE)
+            .addGap(0, 915, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 412, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Equipos", jPanel3);
@@ -222,11 +237,11 @@ public class Vista extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 875, Short.MAX_VALUE)
+            .addGap(0, 915, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 412, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Jugadores", jPanel4);
@@ -235,16 +250,16 @@ public class Vista extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 875, Short.MAX_VALUE)
+            .addGap(0, 915, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 412, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Partidos", jPanel5);
 
-        jPanel1.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 880, 440));
+        jPanel1.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 920, 610));
 
         jLabel2.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -259,7 +274,7 @@ public class Vista extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -295,6 +310,7 @@ public class Vista extends javax.swing.JFrame {
         textNombre.setText("");
         texTemporada.setText("");
         textPais.setText("");
+        CrearTabla();
 
 
     }//GEN-LAST:event_btnGuardarActionPerformed
