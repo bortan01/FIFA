@@ -41,6 +41,7 @@ public class Vista extends javax.swing.JFrame {
 
     public void CrearTabla() {
         try {
+            tablaLiga.setDefaultRenderer(Object.class, new TablaImagen());
             DefaultTableModel modelo = new DefaultTableModel();
             modelo.addColumn("Nombre");
             modelo.addColumn("Pais");
