@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Vista extends javax.swing.JFrame {
 
-    protected String direccion;
+    protected String direccion = "";
     repositorio_liga repo = new repositorio_liga();
     protected Conexion con = new Conexion();
 
@@ -42,15 +42,31 @@ public class Vista extends javax.swing.JFrame {
 
     }
 
+    public void limpiar() {
+        textNombre.setText("");
+        texTemporada.setText("");
+        textPais.setText("");
+        txtFoto.setIcon(null);
+
+        btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(true);
+        btnModificar.setEnabled(true);
+        btnActualizar.setEnabled(true);
+    }
+
     public void CrearTabla() {
         try {
             tablaLiga.setDefaultRenderer(Object.class, new TablaImagen());
             DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Id");
             modelo.addColumn("Nombre");
             modelo.addColumn("Pais");
+            modelo.addColumn("Temporada");
             modelo.addColumn("logo");
             String nombre = null;
             String Nacionalidad = null;
+            String Temporada = null;
+            String id = null;
 
             ImageIcon icono = null;
             InputStream bits = null;
@@ -59,26 +75,25 @@ public class Vista extends javax.swing.JFrame {
             ResultSet rs = repo.listar_liga(con.obtenerConexion());
 
             while (rs.next()) {
-                nombre = rs.getString(1);
-                Nacionalidad = rs.getString(2);
-                bits = rs.getBinaryStream(3);
+                id = rs.getString(1);
+                nombre = rs.getString(2);
+                Nacionalidad = rs.getString(3);
+                Temporada = rs.getString(4);
+                bits = rs.getBinaryStream(5);
                 BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
-                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+               icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
 
-                JLabel txtFoto2 = new JLabel();
-                txtFoto2.setIcon(icono);
-                txtFoto2.enableInputMethods(false);
-                txtFoto.setIcon(icono);
+                JLabel txtLogo = new JLabel();
+                txtLogo.setIcon(icono);
+
                 tablaLiga.setRowHeight(155);
-               
-
-                modelo.addRow(new Object[]{nombre, Nacionalidad, txtFoto2});
+                modelo.addRow(new Object[]{id, nombre, Nacionalidad, Temporada, txtLogo});
             }
             tablaLiga.setModel(modelo);
-          //  CentrarCeldas(0);
-          //  CentrarCeldas(1);
-          //  CentrarCeldas(2);
-           
+            //  CentrarCeldas(0);
+            //  CentrarCeldas(1);
+            //  CentrarCeldas(2);
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
@@ -91,7 +106,7 @@ public class Vista extends javax.swing.JFrame {
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
         tablaLiga.getColumnModel().getColumn(columna).setCellRenderer(modelocentrar);
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -116,6 +131,10 @@ public class Vista extends javax.swing.JFrame {
         txtFoto = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaLiga = new javax.swing.JTable();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -172,7 +191,7 @@ public class Vista extends javax.swing.JFrame {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel7.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
+        jPanel7.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 80, -1));
 
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setText("Logo");
@@ -185,7 +204,7 @@ public class Vista extends javax.swing.JFrame {
             }
         });
         jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(93, 160, 224, -1));
-        jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 170, 180));
+        jPanel7.add(txtFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 170, 180));
 
         tablaLiga.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -198,6 +217,33 @@ public class Vista extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tablaLiga);
 
         jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 860, 310));
+
+        btnEliminar.setText("Eliminar");
+        jPanel7.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 80, -1));
+
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, 80, -1));
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, 80, -1));
+
+        btnActualizar.setText("Actulizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -306,14 +352,83 @@ public class Vista extends javax.swing.JFrame {
         Liga liga = new Liga(0, textNombre.getText().toString(), textPais.getText().toString(), texTemporada.getText().toString(), direccion);
         repo.guardarLiga(liga, con.obtenerConexion());
         con.Cerrar_conexion();
+        direccion = "";
 
-        textNombre.setText("");
-        texTemporada.setText("");
-        textPais.setText("");
+        limpiar();
         CrearTabla();
 
 
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int fila = tablaLiga.getSelectedRow();
+        if (fila >= 0) {
+            try {
+                btnGuardar.setEnabled(false);
+                btnEliminar.setEnabled(false);
+                textNombre.setText(tablaLiga.getValueAt(fila, 1).toString());
+                textPais.setText(tablaLiga.getValueAt(fila, 2).toString());
+                texTemporada.setText(tablaLiga.getValueAt(fila, 3).toString());
+                int id = Integer.parseInt(tablaLiga.getValueAt(fila, 0).toString());
+
+                con.abrirConexion();
+                ResultSet rs = repo.obtener_logo(con.obtenerConexion(), id);
+                ImageIcon icono = null;
+                InputStream bits = null;
+
+                while (rs.next()) {
+                    bits = rs.getBinaryStream(1);
+                    BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
+                    icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+
+                    txtFoto.setIcon(icono);
+
+                }
+                con.Cerrar_conexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Vista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No se a seleccionado el registro");
+        }
+
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        textNombre.setText("");
+        texTemporada.setText("");
+        textPais.setText("");
+        txtFoto.setIcon(null);
+
+        btnEliminar.setEnabled(true);
+        btnGuardar.setEnabled(true);
+        btnModificar.setEnabled(true);
+        btnActualizar.setEnabled(true);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        int fila = tablaLiga.getSelectedRow();
+        if (fila >= 0) {
+            int id = Integer.parseInt(tablaLiga.getValueAt(fila, 0).toString());
+            con.abrirConexion();
+            
+           
+            Liga liga = new Liga(id, textNombre.getText(), textPais.getText(), texTemporada.getText(), direccion);
+            repo.modificar_liga(liga, con.obtenerConexion());
+            System.out.println("la direccion actual es " + direccion);
+            con.Cerrar_conexion();
+
+            limpiar();
+            CrearTabla();
+        }else{
+        JOptionPane.showMessageDialog(null, "no se ha seleccionado nada");
+        }
+
+
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -349,7 +464,11 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
