@@ -27,6 +27,7 @@ CREATE  TABLE IF NOT EXISTS `FIFA`.`equipo` (
   `nombre` VARCHAR(20) NULL DEFAULT NULL ,
   `fecha_fundacion` DATE NULL DEFAULT NULL ,
   `puntos` INT NULL DEFAULT NULL ,
+  `escudo` LONGBLOB NULL ,
   PRIMARY KEY (`id_equipo`) ,
   INDEX `fk_equipo_liga_idx` (`id_liga` ASC) ,
   CONSTRAINT `fk_equipo_liga`
@@ -46,6 +47,7 @@ CREATE  TABLE IF NOT EXISTS `FIFA`.`miembros` (
   `nombre` VARCHAR(20) NULL DEFAULT NULL ,
   `apellido` VARCHAR(20) NULL DEFAULT NULL ,
   `puesto` VARCHAR(20) NULL DEFAULT NULL ,
+  `foto` LONGBLOB NULL ,
   PRIMARY KEY (`id_miembro`) ,
   INDEX `fk_miembros_equipo1_idx` (`id_equipo` ASC) ,
   CONSTRAINT `fk_miembros_equipo1`

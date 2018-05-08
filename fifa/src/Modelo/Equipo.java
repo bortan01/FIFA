@@ -8,18 +8,30 @@ public class Equipo {
     String nombre;
     Date fecha_fundacion;
     int puntos ;
+    String escudo;
 
     public Equipo() {
     }
+
+    public Equipo(int id_equipo, int id_liga, String nombre, Date fecha_fundacion, int puntos, String escudo) {
+        this.id_equipo = id_equipo;
+        this.id_liga = id_liga;
+        this.nombre = nombre;
+        this.fecha_fundacion = fecha_fundacion;
+        this.puntos = puntos;
+        this.escudo = escudo;
+    }
+
+    public String getEscudo() {
+        return escudo;
+    }
+
+    public void setEscudo(String escudo) {
+        this.escudo = escudo;
+    }
     
     
 
-    public Equipo(int id_equipo, int id_liga, Date fecha_fundacion, int puntos) {
-        this.id_equipo = id_equipo;
-        this.id_liga = id_liga;
-        this.fecha_fundacion = fecha_fundacion;
-        this.puntos = puntos;
-    }
 
     public int getId_equipo() {
         return id_equipo;
