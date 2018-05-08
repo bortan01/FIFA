@@ -554,15 +554,15 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEActionPerformed
-//        int dia = fecha_fundacion.getCalendar().get(Calendar.DAY_OF_MONTH);
-//        int mes = fecha_fundacion.getCalendar().get(Calendar.MONTH);
-//        int anio = fecha_fundacion.getCalendar().get(Calendar.YEAR)-1900;
-//        
-//        Date Fecha = new java.sql.Date(anio,mes,dia);
+        int dia = fecha_fundacion.getCalendar().get(Calendar.DAY_OF_MONTH);
+        int mes = fecha_fundacion.getCalendar().get(Calendar.MONTH);
+        int anio = fecha_fundacion.getCalendar().get(Calendar.YEAR)-1900;
         
-       // Liga l = (Liga) combo_liga.getSelectedItem();
-       // System.out.println("el nombre es "+l.getNombre());
-       // System.out.println("el id es" +l.getId_liga());
+        Date Fecha = new java.sql.Date(anio,mes,dia);
+        
+        Liga l = (Liga) combo_liga.getSelectedItem();
+        System.out.println("el nombre es "+l.getNombre());
+        System.out.println("el id es" +l.getId_liga());
         
        
         
