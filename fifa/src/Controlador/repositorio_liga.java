@@ -42,12 +42,12 @@ public class repositorio_liga {
 
         if (l.getFoto() == "") {
             try {
-                String sql = "UPDATE liga SET nombre = '?', pais = '?',temporada = '?' WHERE id_liga = '2'";
+                String sql = "UPDATE liga SET nombre = ?, pais = ?,temporada = ? WHERE id_liga = '" + l.getId_liga() + "'";
 
                 PreparedStatement pps = (PreparedStatement) c.prepareStatement(sql);
-            pps.setString(1,"d");
-            
-            
+                pps.setString(1, l.getNombre());
+                pps.setString(2, l.getPais());
+                pps.setString(3, l.getTemporada());
                 pps.executeUpdate();
 
                 JOptionPane.showMessageDialog(null, "datos actualizados");
@@ -55,22 +55,33 @@ public class repositorio_liga {
                 Logger.getLogger(repositorio_liga.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-//                File archivo = new File(l.getFoto());
-//                FileInputStream imagen;
-//                try {
-//                    imagen = new FileInputStream(archivo);
-//                    String sql = "UPDATE liga SET nombre = '222', pais = '222',temporada = '222', logo = '"+imagen+"'  WHERE id_liga = 1;";
-//                PreparedStatement pps = (PreparedStatement) c.prepareStatement(sql);
-//                pps.executeUpdate();
-//
-//                JOptionPane.showMessageDialog(null, "datos actualizados");
-        
+
+            try {
+                File archivo = new File(l.getFoto());
+                FileInputStream imagen;
+                imagen = new FileInputStream(archivo);
+                String sql = "UPDATE liga SET nombre = ?, pais = ?,temporada = ?, logo = ?  WHERE id_liga = '" + l.getId_liga() + "'";
+
+                PreparedStatement pps = (PreparedStatement) c.prepareStatement(sql);
+                pps.setString(1, l.getNombre());
+                pps.setString(2, l.getPais());
+                pps.setString(3, l.getTemporada());
+                pps.setBinaryStream(4, imagen, (int) archivo.length());
+
+               pps.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "datos actualizados");
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "problemas con la foto " + ex.getMessage());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "problemas con el sql " + ex.getMessage());
+            }
+
+        }
 
     }
 
-}
-
-public ResultSet listar_liga(Connection c) {
+    public ResultSet listar_liga(Connection c) {
         String sql = "SELECT liga.id_liga,liga.nombre, liga.pais,liga.temporada, liga.logo FROM liga";
         ResultSet rs = null;
         try {
