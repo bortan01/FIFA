@@ -200,6 +200,11 @@ public class Vista extends javax.swing.JFrame {
         jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 860, 310));
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
         jPanel7.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, 80, -1));
 
         btnModificar.setText("Modificar");
@@ -429,6 +434,22 @@ public class Vista extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int fila = tablaLiga.getSelectedColumn();
+        if (fila>= 0) {
+            int  id = Integer.parseInt(tablaLiga.getValueAt(fila, 0).toString());
+            Liga l = new Liga();
+            l.setId_liga(id);
+            con.abrirConexion();
+            repo.eliminar_liga(con.obtenerConexion(), l);
+            con.Cerrar_conexion();
+            CrearTabla();
+            
+        }else{
+        JOptionPane.showMessageDialog(null, "no se ha seleccionado fila");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

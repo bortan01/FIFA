@@ -107,4 +107,16 @@ public class repositorio_liga {
         return rs;
 
     }
+    
+    public void eliminar_liga (Connection c , Liga l){
+        try {
+            String sql = "Delete from liga where id_liga = '" + l.getId_liga() + "'";
+            System.out.println(sql);
+           PreparedStatement pps = (PreparedStatement) c.prepareStatement(sql);
+            pps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "problemas con el sql " + ex.getMessage());
+        }
+        
+       }
 }
