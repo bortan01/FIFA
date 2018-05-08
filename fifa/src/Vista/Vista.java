@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -39,7 +42,16 @@ public class Vista extends javax.swing.JFrame {
         txtFondo.setIcon(icono);
 
         CrearTabla();
+        llenar_combo_liga();
 
+    }
+    
+    public void llenar_combo_liga (){
+        DefaultComboBoxModel modelo_liga  = new DefaultComboBoxModel();
+        combo_liga.setModel(modelo_liga);
+        modelo_liga.addElement(new Liga(2, "la liga", "espania", "20093", "none"));
+        modelo_liga.addElement(new Liga(3, "serie a ", "holanda", "2007", "none"));
+        
     }
 
     public void limpiar() {
@@ -139,9 +151,9 @@ public class Vista extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        combo_liga = new javax.swing.JComboBox();
         jTextField1 = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        fecha_fundacion = new com.toedter.calendar.JDateChooser();
         jButton2 = new javax.swing.JButton();
         txtEscudo = new javax.swing.JLabel();
         btnActualizarE = new javax.swing.JButton();
@@ -293,10 +305,10 @@ public class Vista extends javax.swing.JFrame {
         jLabel9.setText("Fecha Fundacion");
         jPanel8.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel8.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 160, -1));
+        combo_liga.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel8.add(combo_liga, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 160, -1));
         jPanel8.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 160, -1));
-        jPanel8.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 160, -1));
+        jPanel8.add(fecha_fundacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 160, -1));
 
         jButton2.setText("Agregar Escudo");
         jPanel8.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 160, -1));
@@ -306,6 +318,11 @@ public class Vista extends javax.swing.JFrame {
         jPanel8.add(btnActualizarE, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 80, -1));
 
         btnGuardarE.setText("Guardar");
+        btnGuardarE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarEActionPerformed(evt);
+            }
+        });
         jPanel8.add(btnGuardarE, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 80, -1));
 
         btn_cancelarE.setText("Cancelar");
@@ -536,6 +553,21 @@ public class Vista extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnGuardarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEActionPerformed
+//        int dia = fecha_fundacion.getCalendar().get(Calendar.DAY_OF_MONTH);
+//        int mes = fecha_fundacion.getCalendar().get(Calendar.MONTH);
+//        int anio = fecha_fundacion.getCalendar().get(Calendar.YEAR)-1900;
+//        
+//        Date Fecha = new java.sql.Date(anio,mes,dia);
+        
+       // Liga l = (Liga) combo_liga.getSelectedItem();
+       // System.out.println("el nombre es "+l.getNombre());
+       // System.out.println("el id es" +l.getId_liga());
+        
+       
+        
+    }//GEN-LAST:event_btnGuardarEActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -580,10 +612,10 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btn_ModificarE;
     private javax.swing.JButton btn_cancelarE;
+    private javax.swing.JComboBox combo_liga;
+    private com.toedter.calendar.JDateChooser fecha_fundacion;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
