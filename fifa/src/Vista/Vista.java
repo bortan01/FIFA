@@ -1,7 +1,9 @@
 package Vista;
 
 import Controlador.Conexion;
+import Controlador.repositorio_equipo;
 import Controlador.repositorio_liga;
+import Modelo.Equipo;
 import Modelo.Liga;
 import com.mysql.jdbc.Connection;
 import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
@@ -31,6 +33,7 @@ public class Vista extends javax.swing.JFrame {
 
     protected String direccion = "";
     repositorio_liga repo = new repositorio_liga();
+    repositorio_equipo repo_equipo = new repositorio_equipo();
     protected Conexion con = new Conexion();
 
     public Vista() {
@@ -41,16 +44,33 @@ public class Vista extends javax.swing.JFrame {
         ImageIcon icono = new ImageIcon(imgagen);
         txtFondo.setIcon(icono);
 
-        CrearTabla();
+        llenar_tabla_liga();
         llenar_combo_liga();
+        llenar_tabla_equipo();
 
     }
-    
-    public void llenar_combo_liga (){
-        DefaultComboBoxModel modelo_liga  = new DefaultComboBoxModel();
+
+    public void llenar_combo_liga() {
+        DefaultComboBoxModel modelo_liga = new DefaultComboBoxModel();
         combo_liga.setModel(modelo_liga);
-        modelo_liga.addElement(new Liga(2, "la liga", "espania", "20093", "none"));
-        modelo_liga.addElement(new Liga(3, "serie a ", "holanda", "2007", "none"));
+
+        con.abrirConexion();
+        ResultSet rs = repo.listar_liga(con.obtenerConexion());
+       
+
+        try {
+            while (rs.next()) {
+                Liga l = new Liga();
+                l.setId_liga(rs.getInt(1));
+                l.setNombre(rs.getString(2));
+                modelo_liga.addElement(l);
+                            
+           
+            }
+          con.Cerrar_conexion();        
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "problemas con el sql " + ex.getMessage());
+        }
         
     }
 
@@ -66,7 +86,7 @@ public class Vista extends javax.swing.JFrame {
         btnActualizar.setEnabled(true);
     }
 
-    public void CrearTabla() {
+    public void llenar_tabla_liga() {
         try {
             tablaLiga.setDefaultRenderer(Object.class, new TablaImagen());
             DefaultTableModel modelo = new DefaultTableModel();
@@ -93,7 +113,7 @@ public class Vista extends javax.swing.JFrame {
                 Temporada = rs.getString(4);
                 bits = rs.getBinaryStream(5);
                 BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
-               icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
 
                 JLabel txtLogo = new JLabel();
                 txtLogo.setIcon(icono);
@@ -111,6 +131,58 @@ public class Vista extends javax.swing.JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con la imagen Stream " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+    }
+    
+    public void llenar_tabla_equipo() {
+        //try {
+            tablaEquipos.setDefaultRenderer(Object.class, new TablaImagen());
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Id");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Liga");
+            modelo.addColumn("Fundacion");
+            modelo.addColumn("Escudo");
+            
+            String id = null;
+            String nombre = null;
+            String liga = null;
+            String escudo = null;
+            Date fundacion = null;
+            String Escudo = null;
+            
+
+//            ImageIcon icono = null;
+//            InputStream bits = null;
+//
+//            con.abrirConexion();
+//            ResultSet rs = repo_equipo.listar_equipo(con.obtenerConexion());
+//
+//            while (rs.next()) {
+//                id = rs.getString(0);
+//                liga = rs.getString(1);
+//                nombre = rs.getString(2);
+//                fundacion = rs.getDate(3);
+//                bits = rs.getBinaryStream(4);
+//                BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
+//                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+//
+//                JLabel txtLogo = new JLabel();
+//                txtEscudo.setIcon(icono);
+//
+//                tablaEquipos.setRowHeight(155);
+//                modelo.addRow(new Object[]{id, liga, nombre,fundacion, txtLogo});
+//            }
+//            tablaEquipos.setModel(modelo);
+//            //  CentrarCeldas(0);
+//            //  CentrarCeldas(1);
+//            //  CentrarCeldas(2);
+//
+//        } catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(null, "Problemas con la imagen Stream " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
 
     }
 
@@ -152,9 +224,9 @@ public class Vista extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         combo_liga = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
+        nombre_equipo = new javax.swing.JTextField();
         fecha_fundacion = new com.toedter.calendar.JDateChooser();
-        jButton2 = new javax.swing.JButton();
+        btn_escudo = new javax.swing.JButton();
         txtEscudo = new javax.swing.JLabel();
         btnActualizarE = new javax.swing.JButton();
         btnGuardarE = new javax.swing.JButton();
@@ -307,11 +379,16 @@ public class Vista extends javax.swing.JFrame {
 
         combo_liga.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel8.add(combo_liga, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 160, -1));
-        jPanel8.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 160, -1));
+        jPanel8.add(nombre_equipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 160, -1));
         jPanel8.add(fecha_fundacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 160, -1));
 
-        jButton2.setText("Agregar Escudo");
-        jPanel8.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 160, -1));
+        btn_escudo.setText("Agregar Escudo");
+        btn_escudo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_escudoActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btn_escudo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 160, -1));
         jPanel8.add(txtEscudo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 170, 180));
 
         btnActualizarE.setText("Actualizar");
@@ -462,7 +539,8 @@ public class Vista extends javax.swing.JFrame {
         direccion = "";
 
         limpiar();
-        CrearTabla();
+        llenar_tabla_liga();
+        llenar_combo_liga();
 
 
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -521,17 +599,16 @@ public class Vista extends javax.swing.JFrame {
         if (fila >= 0) {
             int id = Integer.parseInt(tablaLiga.getValueAt(fila, 0).toString());
             con.abrirConexion();
-            
-           
+
             Liga liga = new Liga(id, textNombre.getText(), textPais.getText(), texTemporada.getText(), direccion);
             repo.modificar_liga(liga, con.obtenerConexion());
             System.out.println("la direccion actual es " + direccion);
             con.Cerrar_conexion();
 
             limpiar();
-            CrearTabla();
-        }else{
-        JOptionPane.showMessageDialog(null, "no se ha seleccionado nada");
+            llenar_tabla_liga();
+        } else {
+            JOptionPane.showMessageDialog(null, "no se ha seleccionado nada");
         }
 
 
@@ -539,34 +616,58 @@ public class Vista extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int fila = tablaLiga.getSelectedColumn();
-        if (fila>= 0) {
-            int  id = Integer.parseInt(tablaLiga.getValueAt(fila, 0).toString());
+        if (fila >= 0) {
+            int id = Integer.parseInt(tablaLiga.getValueAt(fila, 0).toString());
             Liga l = new Liga();
             l.setId_liga(id);
             con.abrirConexion();
             repo.eliminar_liga(con.obtenerConexion(), l);
             con.Cerrar_conexion();
-            CrearTabla();
-            
-        }else{
-        JOptionPane.showMessageDialog(null, "no se ha seleccionado fila");
+            llenar_tabla_liga();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "no se ha seleccionado fila");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEActionPerformed
-        int dia = fecha_fundacion.getCalendar().get(Calendar.DAY_OF_MONTH);
-        int mes = fecha_fundacion.getCalendar().get(Calendar.MONTH);
-        int anio = fecha_fundacion.getCalendar().get(Calendar.YEAR)-1900;
-        
-        Date Fecha = new java.sql.Date(anio,mes,dia);
-        
-        Liga l = (Liga) combo_liga.getSelectedItem();
-        System.out.println("el nombre es "+l.getNombre());
-        System.out.println("el id es" +l.getId_liga());
-        
-       
-        
+
+        try {
+            int dia = fecha_fundacion.getCalendar().get(Calendar.DAY_OF_MONTH);
+            int mes = fecha_fundacion.getCalendar().get(Calendar.MONTH);
+            int anio = fecha_fundacion.getCalendar().get(Calendar.YEAR) - 1900;
+
+            Date Fecha = new java.sql.Date(anio, mes, dia);
+
+            Liga l = (Liga) combo_liga.getSelectedItem();
+            Equipo e = new Equipo(0, l.getId_liga(), nombre_equipo.getText(), Fecha, 0, direccion);
+            con.abrirConexion();
+            repo_equipo.guardar_equipo(con.obtenerConexion(), e);
+            con.Cerrar_conexion();
+
+        } catch (NullPointerException ex) {
+            System.out.println("no ha seleccionado fecha " + ex.getMessage());
+        }
+
     }//GEN-LAST:event_btnGuardarEActionPerformed
+
+    private void btn_escudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_escudoActionPerformed
+        JFileChooser selector = new JFileChooser();
+        selector.setMultiSelectionEnabled(false);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de imagenX", "jpg", "png");
+        selector.setFileFilter(filtro);
+        int opcion = selector.showOpenDialog(this);
+
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            // JOptionPane.showMessageDialog(this, "haz guardado");
+            direccion = selector.getSelectedFile().toString();
+
+            Image imgagen = new ImageIcon(direccion).getImage().getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH);
+            ImageIcon icono = new ImageIcon(imgagen);
+
+            txtEscudo.setIcon(icono);
+        }
+    }//GEN-LAST:event_btn_escudoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -612,10 +713,10 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btn_ModificarE;
     private javax.swing.JButton btn_cancelarE;
+    private javax.swing.JButton btn_escudo;
     private javax.swing.JComboBox combo_liga;
     private com.toedter.calendar.JDateChooser fecha_fundacion;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -636,7 +737,7 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField nombre_equipo;
     private javax.swing.JTable tablaEquipos;
     private javax.swing.JTable tablaLiga;
     private javax.swing.JTextField texTemporada;
