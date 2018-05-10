@@ -37,14 +37,14 @@ public class repositorio_equipo {
     }
     
      public ResultSet listar_equipo(Connection c) {
-        String sql = "SELECT id_equipo,id_liga,nombre,fecha_fundacion,escudo FROM equipo";
+        String sql = "SELECT equipo.id_equipo,liga.nombre,equipo.nombre,equipo.fecha_fundacion,equipo.escudo FROM liga INNER JOIN equipo ON liga.id_liga = equipo.id_liga";
         ResultSet rs = null;
         try {
 
             PreparedStatement ps = (PreparedStatement) c.prepareStatement(sql);
             rs = ps.executeQuery();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Problemas con el sql en listar equipo" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return rs;
     }

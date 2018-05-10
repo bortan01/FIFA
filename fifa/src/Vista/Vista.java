@@ -56,7 +56,6 @@ public class Vista extends javax.swing.JFrame {
 
         con.abrirConexion();
         ResultSet rs = repo.listar_liga(con.obtenerConexion());
-       
 
         try {
             while (rs.next()) {
@@ -64,14 +63,13 @@ public class Vista extends javax.swing.JFrame {
                 l.setId_liga(rs.getInt(1));
                 l.setNombre(rs.getString(2));
                 modelo_liga.addElement(l);
-                            
-           
+
             }
-          con.Cerrar_conexion();        
+            con.Cerrar_conexion();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "problemas con el sql " + ex.getMessage());
         }
-        
+
     }
 
     public void limpiar() {
@@ -122,10 +120,7 @@ public class Vista extends javax.swing.JFrame {
                 modelo.addRow(new Object[]{id, nombre, Nacionalidad, Temporada, txtLogo});
             }
             tablaLiga.setModel(modelo);
-            //  CentrarCeldas(0);
-            //  CentrarCeldas(1);
-            //  CentrarCeldas(2);
-
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
@@ -133,9 +128,10 @@ public class Vista extends javax.swing.JFrame {
         }
 
     }
-    
+
     public void llenar_tabla_equipo() {
-        //try {
+
+        try {
             tablaEquipos.setDefaultRenderer(Object.class, new TablaImagen());
             DefaultTableModel modelo = new DefaultTableModel();
             modelo.addColumn("Id");
@@ -143,46 +139,44 @@ public class Vista extends javax.swing.JFrame {
             modelo.addColumn("Liga");
             modelo.addColumn("Fundacion");
             modelo.addColumn("Escudo");
-            
+
             String id = null;
             String nombre = null;
             String liga = null;
             String escudo = null;
             Date fundacion = null;
             String Escudo = null;
-            
 
-//            ImageIcon icono = null;
-//            InputStream bits = null;
-//
-//            con.abrirConexion();
-//            ResultSet rs = repo_equipo.listar_equipo(con.obtenerConexion());
-//
-//            while (rs.next()) {
-//                id = rs.getString(0);
-//                liga = rs.getString(1);
-//                nombre = rs.getString(2);
-//                fundacion = rs.getDate(3);
-//                bits = rs.getBinaryStream(4);
-//                BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
-//                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
-//
-//                JLabel txtLogo = new JLabel();
-//                txtEscudo.setIcon(icono);
-//
-//                tablaEquipos.setRowHeight(155);
-//                modelo.addRow(new Object[]{id, liga, nombre,fundacion, txtLogo});
-//            }
-//            tablaEquipos.setModel(modelo);
-//            //  CentrarCeldas(0);
-//            //  CentrarCeldas(1);
-//            //  CentrarCeldas(2);
-//
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(null, "Problemas con la imagen Stream " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+            con.abrirConexion();
+            ResultSet rs = repo_equipo.listar_equipo(con.obtenerConexion());
+            ImageIcon icono = null;
+            InputStream bits = null;
+            
+            while (rs.next()) {
+                id = rs.getString(1);
+                liga = rs.getString(2);
+                nombre = rs.getString(3);
+                fundacion = rs.getDate(4);
+                
+                bits = rs.getBinaryStream(5);
+                BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
+                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+
+                JLabel txtLogo = new JLabel();
+                txtLogo.setIcon(icono);
+
+                tablaEquipos.setRowHeight(155);
+                
+                modelo.addRow(new Object[]{id,nombre,liga,fundacion,txtLogo});
+                
+            }
+
+            tablaEquipos.setModel(modelo);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "problemas con el sql en llenar tabla equipo " + ex.getMessage());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "problemas con la imagen en llenar tabla equipo " + ex.getMessage());
+        }
 
     }
 
@@ -648,6 +642,7 @@ public class Vista extends javax.swing.JFrame {
         } catch (NullPointerException ex) {
             System.out.println("no ha seleccionado fecha " + ex.getMessage());
         }
+        llenar_tabla_equipo();
 
     }//GEN-LAST:event_btnGuardarEActionPerformed
 
