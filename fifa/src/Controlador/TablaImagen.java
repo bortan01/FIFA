@@ -1,5 +1,5 @@
 
-package Vista;
+package Controlador;
 
 import java.awt.Component;
 import javax.swing.JLabel;
