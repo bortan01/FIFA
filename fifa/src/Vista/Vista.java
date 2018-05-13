@@ -100,6 +100,7 @@ public class Vista extends javax.swing.JFrame {
 
             ImageIcon icono = null;
             InputStream bits = null;
+            JLabel txtLogo = null;
 
             con.abrirConexion();
             ResultSet rs = repo.listar_liga(con.obtenerConexion());
@@ -110,17 +111,21 @@ public class Vista extends javax.swing.JFrame {
                 Nacionalidad = rs.getString(3);
                 Temporada = rs.getString(4);
                 bits = rs.getBinaryStream(5);
-                BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
-                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+                if (bits != null) {
+                    BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
+                    icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
 
-                JLabel txtLogo = new JLabel();
-                txtLogo.setIcon(icono);
+                    txtLogo = new JLabel();
+                    txtLogo.setIcon(icono);
+                } else {
+                    txtLogo = new JLabel("Sin Logo");
+                }
 
                 tablaLiga.setRowHeight(155);
                 modelo.addRow(new Object[]{id, nombre, Nacionalidad, Temporada, txtLogo});
             }
             tablaLiga.setModel(modelo);
-            
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Problemas con el sql " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
@@ -146,29 +151,35 @@ public class Vista extends javax.swing.JFrame {
             String escudo = null;
             Date fundacion = null;
             String Escudo = null;
+            JLabel txtEscudo = null;
 
             con.abrirConexion();
             ResultSet rs = repo_equipo.listar_equipo(con.obtenerConexion());
             ImageIcon icono = null;
             InputStream bits = null;
-            
+
             while (rs.next()) {
                 id = rs.getString(1);
                 liga = rs.getString(2);
                 nombre = rs.getString(3);
                 fundacion = rs.getDate(4);
-                
-                bits = rs.getBinaryStream(5);
-                BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
-                icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
 
-                JLabel txtLogo = new JLabel();
-                txtLogo.setIcon(icono);
+                bits = rs.getBinaryStream(5);
+
+                if (bits != null) {
+                    BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
+                    icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+
+                    txtEscudo = new JLabel();
+                    txtEscudo.setIcon(icono);
+                } else {
+                    txtEscudo = new JLabel("Sin Escudo");
+                }
 
                 tablaEquipos.setRowHeight(155);
-                
-                modelo.addRow(new Object[]{id,nombre,liga,fundacion,txtLogo});
-                
+
+                modelo.addRow(new Object[]{id, nombre, liga, fundacion, txtEscudo});
+
             }
 
             tablaEquipos.setModel(modelo);
@@ -557,10 +568,12 @@ public class Vista extends javax.swing.JFrame {
 
                 while (rs.next()) {
                     bits = rs.getBinaryStream(1);
-                    BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
-                    icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
 
-                    txtFoto.setIcon(icono);
+                    if (bits != null) {
+                        BufferedImage imagen = (BufferedImage) ImageIO.read(bits);
+                        icono = new ImageIcon(imagen.getScaledInstance(155, 175, java.awt.Image.SCALE_SMOOTH));
+                        txtFoto.setIcon(icono);
+                    }
 
                 }
                 con.Cerrar_conexion();
