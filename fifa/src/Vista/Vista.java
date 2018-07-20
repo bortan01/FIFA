@@ -1,12 +1,14 @@
 package Vista;
 
-import Controlador.TablaImagen;
 import Controlador.Conexion;
 import Controlador.repositorio_equipo;
 import Controlador.repositorio_liga;
 import Modelo.Equipo;
 import Modelo.Liga;
+import com.mysql.jdbc.Connection;
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.awt.Image;
+import java.awt.Label;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
